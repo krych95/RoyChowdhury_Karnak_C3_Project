@@ -79,4 +79,19 @@ public class Restaurant {
 
 
 
+    private List<Item> order = new ArrayList<Item>();
+
+
+    public void addToOrderList(String name, int price) {
+        Item newItem = new Item(name,price);
+        order.add(newItem);
+    }
+
+    public List<Item> getOrderList() {
+
+        return order;
+
+    }
+
+
 }
