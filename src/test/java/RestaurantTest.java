@@ -14,18 +14,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantTest {
     Restaurant restaurant;
 
+
+
+
     //REFACTOR ALL THE REPEATED LINES OF CODE
     @BeforeEach
     public void beforeEachTest() {
         LocalTime openingTime = LocalTime.parse("10:00:00");
         LocalTime closingTime = LocalTime.parse("22:30:00");
-        restaurant = new Restaurant("Amelie's cafe","Chennai",openingTime,closingTime);
+        restaurant = new Restaurant("Amelie's cafe", "Chennai", openingTime, closingTime);
     }
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     //-------FOR THE 2 TESTS BELOW, YOU MAY USE THE CONCEPT OF MOCKING, IF YOU RUN INTO ANY TROUBLE
     @Test
-    public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time(){
+    public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time() {
         //WRITE UNIT TEST CASE HERE
         LocalTime CustomTime = LocalTime.parse("15:30:00");
         Restaurant SpytimeInBetwwen = Mockito.spy(restaurant);
@@ -35,7 +38,7 @@ class RestaurantTest {
     }
 
     @Test
-    public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time(){
+    public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time() {
         //before opening time expected false
         LocalTime CustomTimeBefroe = LocalTime.parse("08:00:00");
         Restaurant SpytimeBefore = Mockito.spy(restaurant);
@@ -56,32 +59,62 @@ class RestaurantTest {
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>MENU<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @Test
-    public void adding_item_to_menu_should_increase_menu_size_by_1(){
-        restaurant.addToMenu("Sweet corn soup",119);
+    public void adding_item_to_menu_should_increase_menu_size_by_1() {
+        restaurant.addToMenu("Sweet corn soup", 119);
         restaurant.addToMenu("Vegetable lasagne", 269);
 
         int initialMenuSize = restaurant.getMenu().size();
-        restaurant.addToMenu("Sizzling brownie",319);
-        assertEquals(initialMenuSize+1,restaurant.getMenu().size());
+        restaurant.addToMenu("Sizzling brownie", 319);
+        assertEquals(initialMenuSize + 1, restaurant.getMenu().size());
     }
+
     @Test
     public void removing_item_from_menu_should_decrease_menu_size_by_1() throws itemNotFoundException {
-        restaurant.addToMenu("Sweet corn soup",119);
+        restaurant.addToMenu("Sweet corn soup", 119);
         restaurant.addToMenu("Vegetable lasagne", 269);
 
         int initialMenuSize = restaurant.getMenu().size();
         restaurant.removeFromMenu("Vegetable lasagne");
-        assertEquals(initialMenuSize-1,restaurant.getMenu().size());
+        assertEquals(initialMenuSize - 1, restaurant.getMenu().size());
     }
+
     @Test
     public void removing_item_that_does_not_exist_should_throw_exception() {
-        restaurant.addToMenu("Sweet corn soup",119);
+        restaurant.addToMenu("Sweet corn soup", 119);
         restaurant.addToMenu("Vegetable lasagne", 269);
 
         assertThrows(itemNotFoundException.class,
-                ()->restaurant.removeFromMenu("French fries"));
+                () -> restaurant.removeFromMenu("French fries"));
     }
+
+
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<<<<ordervalue>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @Test
+    public void if_the_item_greterthan_zero_update_the_ordervalue() {
+        restaurant.addToMenu("Sweet corn soup", 119);
+        restaurant.addToMenu("Vegetable lasagne", 269);
+        int totaItemprice = 0;
+        for (int i=0; i<restaurant.getMenu().size(); i++ ) {
+            if(restaurant.getMenu().get(i).getPrice()>0) {
+                restaurant.getMenu().get(i);
+                totaItemprice = totaItemprice + restaurant.getMenu().get(i).getPrice();
+            }
+        }
+
+        restaurant.addToOrderList("Sweet corn soup", 119);
+        restaurant.addToOrderList("Vegetable lasagne", 269);
+         int totalOrderprice = 0;
+        for (int i=0; i<restaurant.getOrderList().size(); i++ ) {
+            if(restaurant.getOrderList().get(i).getPrice()>0) {
+              restaurant.getOrderList().get(i);
+                totalOrderprice = totalOrderprice + restaurant.getOrderList().get(i).getPrice();
+            }
+        }
+        assertEquals(totaItemprice, totalOrderprice);
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<ordervalue>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 }
